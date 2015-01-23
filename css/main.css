@@ -25,6 +25,31 @@
 
 
 /*MAIN QUIZ CONTENT*/
+#begin {
+	width: 200px;
+	height: 106.66px;
+	display: block;
+	margin: 0 auto;
+}
+
+#begin-button {
+	font-family: 'Josefin Slab', serif;
+	width: 150px;
+	height: 80px;
+	display: block;
+	margin: 20px auto;
+	border-radius: 10px;
+	font-size: 2em;
+	background: #00483a;
+	color: #ffbe00;
+	border: 2px solid #ffbe00;
+}
+
+#begin-button:hover {
+	cursor: pointer;
+	border: 5px solid #ffbe00;
+}
+
 .question, .answerform, .footer-text, .feedback {
 	font-family: 'Josefin Sans', sans-serif;
 	text-align: center;
