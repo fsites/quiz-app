@@ -7,7 +7,7 @@ var questions = [
 	correct: 0},
 
 	{question: "Which pitcher won the 1992 Cy Young Award with the Oakland A's?",
-	answers: ["Randy Johson", "Roger Clemens", "Dennis Eckersley", "David Cone"],
+	answers: ["Randy Johnson", "Roger Clemens", "Dennis Eckersley", "David Cone"],
 	correct: 2},
 
 	{question: "Who has the most all time home runs for the Oakland A's?",
@@ -25,6 +25,7 @@ var questions = [
 
 /*GLOBAL VARIABLES*/
 var questionNum = 0
+var numberCorrect = 0
 
 /*HIDES QUESTIONS on PAGE LOAD*/
 $('.content').hide();
@@ -41,36 +42,60 @@ $('#begin-button').click(function(){
 /*HELPER FUNCTION - LOADS QUESTION and ANSWERS*/
 function question() {
 	$('.question').text(questions[questionNum].question);
-	for (i = 0; i <= 4; i++) {
-		$('.answerform').prepend("<input type='radio' name='answer' class='radio'>" 
+	for (i = 0; i <= questions.length; i++) {
+		$('.answers').prepend("<input type='radio' name='answer' class='radio' value=' "+ i +" '>" 
 			+ questions[questionNum].answers[i] 
 			+ "<br>");
 	};
 }
 
-/*HELPER FUNCTION - REMOVES PREVIOUS ANSWERS*/
+/*HELPER FUNCTION - REMOVES RADIO BUTTONS*/
 function removeAnswers() {
-	undefined /*placeholder*/
+	$('.radio').remove();
+	$('.answers').empty();
 }
 
-/*SUBMIT CLICKED FUNCTION*/
-var submitClicked = $('#submitbutton').click(function() {
-	var userAnswer = $('.radio').prop('checked', true).val();
-	var correctAnswer = questions[questionNum].correct;
-	if (userAnswer == null) {
-		$('#feedback').text("You didn't pick an answer... we can't have people hitting submit without even trying. So make a guess, you have a 25% chance of getting it right. Don't worry, the next question is easier.")}
-	else if (userAnswer == correctAnswer) {
-		questionNum++
-		$('#feedback').text("Correct!")
-		question()
+/*HELPER FUNCTION - ENDS QUIZ and DISPLAYS RESULTS*/
+function quizEnd() {
+	if (questionNum == 5) {
+		$('.question').hide()
+		$('.answerform').hide()
+		$('#feedback').text("You got " 				
+			+ numberCorrect 
+			+ " out of 5 correct")
 	}
-	else {
-		questionNum++
-		$('#feedback').text("Wrong Answer")
-		question()
-	};
+	else {};
+}
+		
+
+/*SUBMIT CLICKED FUNCTION*/
+$('#submitbutton').click(function() {
+	//local variables to be compared
+	var userAnswer = $('input[type=radio]:checked').val();
+	var correctAnswer = questions[questionNum].correct;
+
+		//Checks answers and moves to next question
+		if (userAnswer == null) {
+			$('#feedback').text("You need to pick something...")}
+		else if (userAnswer == correctAnswer) {
+			$('#feedback').text("Correct!")
+			removeAnswers()
+			questionNum++
+			numberCorrect++
+			quizEnd()
+			question()	
+		}
+		else {
+			$('#feedback').text("Wrong Answer")
+			removeAnswers()
+			questionNum++
+			quizEnd()
+			question()
+		};
+
 	console.log('submit clicked')
 	console.log("questionNum = " + questionNum)
+	console.log('userAnswer is ' + userAnswer)
 	return false;
 })
 
