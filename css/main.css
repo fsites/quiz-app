@@ -85,6 +85,10 @@
 	color: #FFBE00;
 }
 
+#submitbutton:hover {
+	cursor: pointer;
+}
+
 
 /*FOOTER*/
 .footer {

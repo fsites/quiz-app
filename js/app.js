@@ -23,6 +23,9 @@ var questions = [
 	correct: 3}
 ];
 
+/*GLOBAL VARIABLES*/
+var questionNum = 0
+
 /*HIDES QUESTIONS on PAGE LOAD*/
 $('.content').hide();
 
@@ -31,29 +34,43 @@ $('.content').hide();
 $('#begin-button').click(function(){
 	$('#begin').hide();
 	$('.content').show();
+	$('#feedback').text("Select an Answer and press Submit");
 	question();
 })
 
-/*LOADS QUESTION and ANSWERS*/
-var question = function() {
-	$('#feedback').text("Select an Answer and press Submit");
-	$('.question').text(questions[0].question);
+/*HELPER FUNCTION - LOADS QUESTION and ANSWERS*/
+function question() {
+	$('.question').text(questions[questionNum].question);
 	for (i = 0; i <= 4; i++) {
-		$('.answerform').prepend("<input type='radio' name='answer'>" + questions[0].answers[i] + "<br>");
+		$('.answerform').prepend("<input type='radio' name='answer' class='radio'>" 
+			+ questions[questionNum].answers[i] 
+			+ "<br>");
 	};
 }
 
-/*SUBMIT CLICKED NOT WORKING PAGE REFRESHES*****/
+/*HELPER FUNCTION - REMOVES PREVIOUS ANSWERS*/
+function removeAnswers() {
+	undefined /*placeholder*/
+}
+
+/*SUBMIT CLICKED FUNCTION*/
 var submitClicked = $('#submitbutton').click(function() {
-	var userAnswer = ('input:radio[name=answer]:checked').val();
-	var correctAnswer = questions.correct;
+	var userAnswer = $('.radio').prop('checked', true).val();
+	var correctAnswer = questions[questionNum].correct;
 	if (userAnswer == null) {
-		$('#feedback').text("Select an answer")}
+		$('#feedback').text("You didn't pick an answer... we can't have people hitting submit without even trying. So make a guess, you have a 25% chance of getting it right. Don't worry, the next question is easier.")}
 	else if (userAnswer == correctAnswer) {
-		$('#feedback').text("Correct!")}
+		questionNum++
+		$('#feedback').text("Correct!")
+		question()
+	}
 	else {
+		questionNum++
 		$('#feedback').text("Wrong Answer")
+		question()
 	};
+	console.log('submit clicked')
+	console.log("questionNum = " + questionNum)
 	return false;
 })
 
