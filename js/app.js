@@ -30,7 +30,6 @@ var numberCorrect = 0
 /*HIDES QUESTIONS on PAGE LOAD*/
 $('.content').hide();
 
-
 /*HIDES BEGIN BUTTON ON CLICK, SHOWS FIRST QUESTION*/
 $('#begin-button').click(function(){
 	$('#begin').hide();
@@ -41,12 +40,18 @@ $('#begin-button').click(function(){
 
 /*HELPER FUNCTION - LOADS QUESTION and ANSWERS*/
 function question() {
-	$('.question').text(questions[questionNum].question);
-	for (i = 0; i <= questions.length; i++) {
-		$('.answers').prepend("<input type='radio' name='answer' class='radio' value=' "+ i +" '>" 
-			+ questions[questionNum].answers[i] 
-			+ "<br>");
-	};
+	console.log("questionNum = " + questionNum);
+	if (questionNum < questions.length) {
+		$('.question').text(questions[questionNum].question);
+		for (i = 0; i < questions[questionNum].answers.length; i++) {
+			$('.answers').prepend("<input type='radio' name='answer' class='radio' value=' "+ i +" '>" 
+				+ questions[questionNum].answers[i] 
+				+ "<br>");
+			}
+		}
+	else {
+		quizEnd()
+	}
 }
 
 /*HELPER FUNCTION - REMOVES RADIO BUTTONS*/
@@ -57,23 +62,18 @@ function removeAnswers() {
 
 /*HELPER FUNCTION - ENDS QUIZ and DISPLAYS RESULTS*/
 function quizEnd() {
-	if (questionNum == 5) {
 		$('.question').hide()
 		$('.answerform').hide()
 		$('#feedback').text("You got " 				
 			+ numberCorrect 
-			+ " out of 5 correct")
-	}
-	else {};
+			+ " out of " + questions.length + " correct")
 }
 		
-
 /*SUBMIT CLICKED FUNCTION*/
 $('#submitbutton').click(function() {
 	//local variables to be compared
 	var userAnswer = $('input[type=radio]:checked').val();
 	var correctAnswer = questions[questionNum].correct;
-
 		//Checks answers and moves to next question
 		if (userAnswer == null) {
 			$('#feedback').text("You need to pick something...")}
@@ -82,22 +82,38 @@ $('#submitbutton').click(function() {
 			removeAnswers()
 			questionNum++
 			numberCorrect++
-			quizEnd()
 			question()	
 		}
 		else {
 			$('#feedback').text("Wrong Answer")
 			removeAnswers()
 			questionNum++
-			quizEnd()
 			question()
 		};
-
 	console.log('submit clicked')
-	console.log("questionNum = " + questionNum)
 	console.log('userAnswer is ' + userAnswer)
 	return false;
 })
 
 
 });
+
+/*THIGNS TO ADD
+More questions (100)
+Restart button
+Make scalable for mobile
+Display current score
+Tweak css
+Score as percentage
+Display number of questions remaining
+Display correct answers if answered wrong
+*/
+
+
+
+
+
+
+
+
+
